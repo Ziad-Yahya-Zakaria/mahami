@@ -6,7 +6,7 @@ export default function Home() {
         <p className="text-lg text-gray-300 mb-8">تطبيق إدارة المهام الذكي</p>
 
         <a
-          href="/index.html"
+          href="/mahamey/index.html"
           className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-xl text-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
         >
           <span>افتح التطبيق</span>
