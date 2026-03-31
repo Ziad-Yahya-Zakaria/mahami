@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="description" content="تطبيق مهامي - إدارة المهام بذكاء">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="مهامي">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-512x512.jpg">
+    <link rel="icon" type="image/jpeg" href="icons/icon-512x512.jpg">
+    <title>مهامي - إدارة المهام</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-icon">
+                <svg viewBox="0 0 100 100" width="100" height="100">
+                    <defs>
+                        <linearGradient id="splash-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:var(--primary-color)"/>
+                            <stop offset="100%" style="stop-color:var(--secondary-color)"/>
+                        </linearGradient>
+                    </defs>
+                    <rect x="10" y="10" width="80" height="80" rx="20" fill="url(#splash-gradient)"/>
+                    <path d="M30 50 L45 65 L70 35" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h1 class="splash-title">مهامي</h1>
+            <p class="splash-subtitle">إدارة المهام بذكاء</p>
+            <div class="splash-loader"></div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app" class="app-container hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <button id="menu-toggle" class="header-btn" aria-label="القائمة">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
+            <h1 id="page-title" class="header-title">مهامي</h1>
+            <button id="notifications-btn" class="header-btn" aria-label="التنبيهات">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span id="notification-badge" class="notification-badge hidden">0</span>
+            </button>
+        </header>
+
+        <!-- Sidebar Navigation -->
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <svg viewBox="0 0 50 50" width="40" height="40">
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:var(--primary-color)"/>
+                                <stop offset="100%" style="stop-color:var(--secondary-color)"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="5" y="5" width="40" height="40" rx="10" fill="url(#logo-gradient)"/>
+                        <path d="M15 25 L22 32 L35 18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <span class="sidebar-title">مهامي</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="tasks">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 11l3 3L22 4"/>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                    </svg>
+                    <span>مهامي</span>
+                </li>
+                <li class="nav-item" data-page="achievements">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="8" r="7"/>
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                    </svg>
+                    <span>الإنجاز</span>
+                </li>
+                <li class="nav-item" data-page="add-task">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="16"/>
+                        <line x1="8" y1="12" x2="16" y2="12"/>
+                    </svg>
+                    <span>إضافة مهمة</span>
+                </li>
+                <li class="nav-item" data-page="task-log">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    <span>سجل المهام</span>
+                </li>
+                <li class="nav-item" data-page="kpi-board">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    <span>KPI بورد</span>
+                </li>
+                <li class="nav-item" data-page="notes">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                    <span>مذكرة</span>
+                </li>
+                <li class="nav-item" data-page="reports">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+                        <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+                    </svg>
+                    <span>استخراج تقارير</span>
+                </li>
+                <li class="nav-item" data-page="import-task">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    <span>استيراد مهمة</span>
+                </li>
+                <li class="nav-item" data-page="multi-tasks">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    <span>مهام متعددة</span>
+                </li>
+                <li class="nav-item" data-page="notifications">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                    <span>التنبيهات</span>
+                </li>
+                <li class="nav-item" data-page="task-achievements">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    <span>إنجازات المهام</span>
+                </li>
+                <li class="nav-divider"></li>
+                <li class="nav-item" data-page="settings">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                    <span>الإعدادات</span>
+                </li>
+                <li class="nav-item" data-page="backup">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    <span>النسخ الاحتياطي</span>
+                </li>
+                <li class="nav-item" data-page="about">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    <span>عن البرنامج</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Sidebar Overlay -->
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="main-content">
+            <!-- Tasks Page -->
+            <section id="page-tasks" class="page active">
+                <div class="page-header">
+                    <h2>مهامي اليوم</h2>
+                    <div class="task-filters">
+                        <button class="filter-btn active" data-filter="all">الكل</button>
+                        <button class="filter-btn" data-filter="pending">قيد الانتظار</button>
+                        <button class="filter-btn" data-filter="completed">مكتملة</button>
+                    </div>
+                </div>
+                <div class="tasks-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon pending">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="pending-count">0</span>
+                            <span class="stat-label">قيد الانتظار</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon completed">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="completed-count">0</span>
+                            <span class="stat-label">مكتملة</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon total">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="total-count">0</span>
+                            <span class="stat-label">إجمالي المهام</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="tasks-list" class="tasks-list">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                        </svg>
+                        <h3>لا توجد مهام</h3>
+                        <p>ابدأ بإضافة مهمة جديدة</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Achievements Page -->
+            <section id="page-achievements" class="page">
+                <div class="page-header">
+                    <h2>الإنجاز اليومي</h2>
+                </div>
+                <div class="achievement-overview">
+                    <div class="achievement-ring">
+                        <svg viewBox="0 0 120 120">
+                            <circle class="ring-bg" cx="60" cy="60" r="54" fill="none" stroke-width="12"/>
+                            <circle id="achievement-progress" class="ring-progress" cx="60" cy="60" r="54" fill="none" stroke-width="12" stroke-dasharray="339.292" stroke-dashoffset="339.292"/>
+                        </svg>
+                        <div class="achievement-percent">
+                            <span id="achievement-value">0</span>%
+                        </div>
+                    </div>
+                    <div class="achievement-details">
+                        <h3>معدل الإنجاز</h3>
+                        <p id="achievement-text">لم تكمل أي مهام بعد</p>
+                    </div>
+                </div>
+                <div class="achievement-badges">
+                    <h3>الشارات المحققة</h3>
+                    <div id="badges-container" class="badges-grid">
+                        <!-- Badges will be populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Add Task Page -->
+            <section id="page-add-task" class="page">
+                <div class="page-header">
+                    <h2>إضافة مهمة جديدة</h2>
+                </div>
+                <form id="add-task-form" class="task-form">
+                    <div class="form-group">
+                        <label for="task-title">عنوان المهمة</label>
+                        <input type="text" id="task-title" placeholder="أدخل عنوان المهمة" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-description">وصف المهمة</label>
+                        <textarea id="task-description" placeholder="أدخل وصف المهمة (اختياري)" rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-category">التصنيف</label>
+                            <select id="task-category">
+                                <option value="personal">شخصي</option>
+                                <option value="work">عمل</option>
+                                <option value="study">دراسة</option>
+                                <option value="health">صحة</option>
+                                <option value="shopping">تسوق</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-priority">الأولوية</label>
+                            <select id="task-priority">
+                                <option value="low">منخفضة</option>
+                                <option value="medium" selected>متوسطة</option>
+                                <option value="high">عالية</option>
+                                <option value="urgent">عاجلة</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-date">تاريخ الاستحقاق</label>
+                            <input type="date" id="task-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="task-time">الوقت</label>
+                            <input type="time" id="task-time">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-reminder">التذكير</label>
+                        <select id="task-reminder">
+                            <option value="none">بدون تذكير</option>
+                            <option value="5">قبل 5 دقائق</option>
+                            <option value="15">قبل 15 دقيقة</option>
+                            <option value="30">قبل 30 دقيقة</option>
+                            <option value="60">قبل ساعة</option>
+                            <option value="1440">قبل يوم</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>اللون</label>
+                        <div class="color-picker">
+                            <button type="button" class="color-option active" data-color="#6366f1" style="background:#6366f1"></button>
+                            <button type="button" class="color-option" data-color="#ec4899" style="background:#ec4899"></button>
+                            <button type="button" class="color-option" data-color="#10b981" style="background:#10b981"></button>
+                            <button type="button" class="color-option" data-color="#f59e0b" style="background:#f59e0b"></button>
+                            <button type="button" class="color-option" data-color="#ef4444" style="background:#ef4444"></button>
+                            <button type="button" class="color-option" data-color="#8b5cf6" style="background:#8b5cf6"></button>
+                            <button type="button" class="color-option" data-color="#06b6d4" style="background:#06b6d4"></button>
+                            <button type="button" class="color-option" data-color="#84cc16" style="background:#84cc16"></button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        إضافة المهمة
+                    </button>
+                </form>
+            </section>
+
+            <!-- Task Log Page -->
+            <section id="page-task-log" class="page">
+                <div class="page-header">
+                    <h2>سجل المهام</h2>
+                    <div class="log-filters">
+                        <input type="date" id="log-date-filter" class="log-date-input">
+                    </div>
+                </div>
+                <div id="task-log-list" class="task-log-list">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <h3>لا يوجد س��ل</h3>
+                        <p>سجل المهام فارغ حالياً</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KPI Board Page -->
+            <section id="page-kpi-board" class="page">
+                <div class="page-header">
+                    <h2>لوحة مؤشرات الأداء</h2>
+                </div>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">المهام اليوم</span>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <div class="kpi-value" id="kpi-today">0</div>
+                        <div class="kpi-change positive">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                            </svg>
+                            <span id="kpi-today-change">0%</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">معدل الإكمال</span>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                        </div>
+                        <div class="kpi-value" id="kpi-completion">0%</div>
+                        <div class="kpi-progress">
+                            <div class="kpi-progress-bar" id="kpi-completion-bar" style="width:0%"></div>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">المهام هذا الأسبوع</span>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"/>
+                                <line x1="12" y1="20" x2="12" y2="4"/>
+                                <line x1="6" y1="20" x2="6" y2="14"/>
+                            </svg>
+                        </div>
+                        <div class="kpi-value" id="kpi-week">0</div>
+                        <div class="kpi-subtitle">مهمة مكتملة</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-title">أيام متتالية</span>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            </svg>
+                        </div>
+                        <div class="kpi-value" id="kpi-streak">0</div>
+                        <div class="kpi-subtitle">يوم</div>
+                    </div>
+                </div>
+                <div class="kpi-chart-section">
+                    <h3>إحصائيات الأسبوع</h3>
+                    <div class="weekly-chart">
+                        <div class="chart-bars" id="weekly-chart">
+                            <!-- Chart bars will be populated by JS -->
+                        </div>
+                        <div class="chart-labels">
+                            <span>سبت</span>
+                            <span>أحد</span>
+                            <span>إثن</span>
+                            <span>ثلا</span>
+                            <span>أربع</span>
+                            <span>خمس</span>
+                            <span>جمعة</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notes Page -->
+            <section id="page-notes" class="page">
+                <div class="page-header">
+                    <h2>المذكرة</h2>
+                    <button id="add-note-btn" class="btn btn-primary btn-sm">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        ملاحظة جديدة
+                    </button>
+                </div>
+                <div id="notes-list" class="notes-grid">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                        <h3>لا توجد ملاحظات</h3>
+                        <p>ابدأ بإضافة ملاحظة جديدة</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Page -->
+            <section id="page-reports" class="page">
+                <div class="page-header">
+                    <h2>استخراج التقارير</h2>
+                </div>
+                <div class="reports-options">
+                    <div class="report-card" data-report="daily">
+                        <div class="report-icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <h3>تقرير يومي</h3>
+                        <p>إحصائيات المهام لليوم</p>
+                    </div>
+                    <div class="report-card" data-report="weekly">
+                        <div class="report-icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"/>
+                                <line x1="12" y1="20" x2="12" y2="4"/>
+                                <line x1="6" y1="20" x2="6" y2="14"/>
+                            </svg>
+                        </div>
+                        <h3>تقرير أسبوعي</h3>
+                        <p>ملخص الأسبوع الحالي</p>
+                    </div>
+                    <div class="report-card" data-report="monthly">
+                        <div class="report-icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+                                <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+                            </svg>
+                        </div>
+                        <h3>تقرير شهري</h3>
+                        <p>إحصائيات الشهر كاملاً</p>
+                    </div>
+                    <div class="report-card" data-report="custom">
+                        <div class="report-icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <h3>تقرير مخصص</h3>
+                        <p>حدد الفترة الزمنية</p>
+                    </div>
+                </div>
+                <div id="report-preview" class="report-preview hidden">
+                    <div class="report-header">
+                        <h3 id="report-title">التقرير</h3>
+                        <div class="report-actions">
+                            <button id="export-pdf" class="btn btn-outline btn-sm">تصدير PDF</button>
+                            <button id="share-report" class="btn btn-outline btn-sm">مشاركة</button>
+                        </div>
+                    </div>
+                    <div id="report-content" class="report-content">
+                        <!-- Report content will be populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Import Task Page -->
+            <section id="page-import-task" class="page">
+                <div class="page-header">
+                    <h2>استيراد مهمة</h2>
+                </div>
+                <div class="import-options">
+                    <div class="import-card">
+                        <div class="import-icon">
+                            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                        </div>
+                        <h3>استيراد من ملف</h3>
+                        <p>استيراد مهام من ملف JSON أو CSV</p>
+                        <input type="file" id="import-file" accept=".json,.csv" hidden>
+                        <button class="btn btn-primary" onclick="document.getElementById('import-file').click()">اختر ملف</button>
+                    </div>
+                    <div class="import-card">
+                        <div class="import-icon">
+                            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            </svg>
+                        </div>
+                        <h3>لصق من الحافظة</h3>
+                        <p>الصق نص المهام مباشرة</p>
+                        <button id="paste-tasks-btn" class="btn btn-primary">لصق</button>
+                    </div>
+                </div>
+                <div id="import-preview" class="import-preview hidden">
+                    <h3>معاينة المهام</h3>
+                    <div id="import-list" class="import-list"></div>
+                    <div class="import-actions">
+                        <button id="confirm-import" class="btn btn-primary">استيراد الكل</button>
+                        <button id="cancel-import" class="btn btn-outline">إلغاء</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Multi Tasks Page -->
+            <section id="page-multi-tasks" class="page">
+                <div class="page-header">
+                    <h2>إضافة مهام متعددة</h2>
+                </div>
+                <div class="multi-tasks-form">
+                    <div class="form-group">
+                        <label>أدخل المهام (كل مهمة في سطر)</label>
+                        <textarea id="multi-tasks-input" rows="10" placeholder="مهمة 1&#10;مهمة 2&#10;مهمة 3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="multi-category">التصنيف للجميع</label>
+                            <select id="multi-category">
+                                <option value="personal">شخصي</option>
+                                <option value="work">عمل</option>
+                                <option value="study">دراسة</option>
+                                <option value="health">صحة</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="multi-priority">الأولوية للجميع</label>
+                            <select id="multi-priority">
+                                <option value="low">منخفضة</option>
+                                <option value="medium" selected>متوسطة</option>
+                                <option value="high">عالية</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="add-multi-tasks" class="btn btn-primary btn-block">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        إضافة المهام
+                    </button>
+                </div>
+            </section>
+
+            <!-- Notifications Page -->
+            <section id="page-notifications" class="page">
+                <div class="page-header">
+                    <h2>التنبيهات</h2>
+                    <button id="clear-notifications" class="btn btn-outline btn-sm">مسح الكل</button>
+                </div>
+                <div id="notifications-list" class="notifications-list">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        <h3>لا توجد تنبيهات</h3>
+                        <p>ستظهر التنبيهات هنا</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Task Achievements Page -->
+            <section id="page-task-achievements" class="page">
+                <div class="page-header">
+                    <h2>إنجازات المهام</h2>
+                </div>
+                <div class="achievements-summary">
+                    <div class="summary-card">
+                        <div class="summary-value" id="total-achievements">0</div>
+                        <div class="summary-label">إجمالي الإنجازات</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-value" id="best-streak">0</div>
+                        <div class="summary-label">أفضل سلسلة</div>
+                    </div>
+                </div>
+                <div id="achievements-list" class="achievements-list">
+                    <!-- Achievements will be populated by JS -->
+                </div>
+                <div class="share-section">
+                    <h3>شارك إنجازاتك</h3>
+                    <div class="share-buttons">
+                        <button class="share-btn whatsapp" data-platform="whatsapp">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                        </button>
+                        <button class="share-btn twitter" data-platform="twitter">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </button>
+                        <button class="share-btn facebook" data-platform="facebook">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </button>
+                        <button class="share-btn telegram" data-platform="telegram">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Page -->
+            <section id="page-settings" class="page">
+                <div class="page-header">
+                    <h2>الإعدادات</h2>
+                </div>
+                <div class="settings-list">
+                    <div class="settings-group">
+                        <h3>المظهر</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-label">الوضع الليلي</span>
+                                <span class="setting-desc">تفعيل المظهر الداكن</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="dark-mode-toggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-label">اللون الأساسي</span>
+                                <span class="setting-desc">تخصيص لون التطبيق</span>
+                            </div>
+                            <div class="theme-colors">
+                                <button class="theme-color active" data-theme-color="#6366f1" style="background:#6366f1"></button>
+                                <button class="theme-color" data-theme-color="#ec4899" style="background:#ec4899"></button>
+                                <button class="theme-color" data-theme-color="#10b981" style="background:#10b981"></button>
+                                <button class="theme-color" data-theme-color="#f59e0b" style="background:#f59e0b"></button>
+                                <button class="theme-color" data-theme-color="#ef4444" style="background:#ef4444"></button>
+                                <button class="theme-color" data-theme-color="#8b5cf6" style="background:#8b5cf6"></button>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-label">الخط</span>
+                                <span class="setting-desc">اختر نوع الخط المفضل</span>
+                            </div>
+                            <select id="font-select" class="setting-select">
+                                <option value="Cairo">Cairo</option>
+                                <option value="Dubai">Dubai</option>
+                                <option value="29LT Idris">29LT Idris</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-label">حجم الخط</span>
+                                <span class="setting-desc">تكبير أو تصغير النص</span>
+                            </div>
+                            <select id="font-size-select" class="setting-select">
+                                <option value="small">صغير</option>
+                                <option value="medium" selected>متوسط</option>
+                                <option value="large">كبير</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <h3>التنبيهات</h3>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-label">ت����عيل التنبيهات</span>
+                                <span class="setting-desc">استلام تنبيهات المهام</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifications-toggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-label">صوت التنبيه</span>
+                                <span class="setting-desc">تشغيل صوت عند التنبيه</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="sound-toggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <h3>البيانات</h3>
+                        <div class="setting-item clickable" onclick="navigateTo('backup')">
+                            <div class="setting-info">
+                                <span class="setting-label">النسخ الاحتياطي</span>
+                                <span class="setting-desc">حفظ واستعادة البيانات</span>
+                            </div>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="setting-item clickable" id="clear-data-btn">
+                            <div class="setting-info">
+                                <span class="setting-label">مسح البيانات</span>
+                                <span class="setting-desc">حذف جميع المهام والإعدادات</span>
+                            </div>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--danger-color)" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Backup Page -->
+            <section id="page-backup" class="page">
+                <div class="page-header">
+                    <h2>النسخ الاحتياطي</h2>
+                </div>
+                <div class="backup-options">
+                    <div class="backup-card">
+                        <div class="backup-icon">
+                            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+                        <h3>أخذ نسخة احتياطية</h3>
+                        <p>حفظ جميع البيانات في ملف</p>
+                        <button id="create-backup" class="btn btn-primary">إنشاء نسخة</button>
+                    </div>
+                    <div class="backup-card">
+                        <div class="backup-icon">
+                            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                        </div>
+                        <h3>استعادة نسخة احتياطية</h3>
+                        <p>استرجاع البيانات من ملف</p>
+                        <input type="file" id="restore-file" accept=".json" hidden>
+                        <button id="restore-backup" class="btn btn-outline" onclick="document.getElementById('restore-file').click()">استعادة</button>
+                    </div>
+                </div>
+                <div class="backup-info">
+                    <h4>معلومات النسخة الاحتياطية</h4>
+                    <p id="last-backup">آخر نسخة: لم يتم إنشاء نسخة بعد</p>
+                </div>
+            </section>
+
+            <!-- About Page -->
+            <section id="page-about" class="page">
+                <div class="page-header">
+                    <h2>عن البرنامج</h2>
+                </div>
+                <div class="about-content">
+                    <div class="about-logo">
+                        <svg viewBox="0 0 100 100" width="100" height="100">
+                            <defs>
+                                <linearGradient id="about-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:var(--primary-color)"/>
+                                    <stop offset="100%" style="stop-color:var(--secondary-color)"/>
+                                </linearGradient>
+                            </defs>
+                            <rect x="10" y="10" width="80" height="80" rx="20" fill="url(#about-gradient)"/>
+                            <path d="M30 50 L45 65 L70 35" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h1 class="about-title">مهامي</h1>
+                    <p class="about-version">الإصدار 1.0.0</p>
+                    <p class="about-desc">تطبيق إدارة المهام الذكي - صُمم ليساعدك على تنظيم حياتك اليومية بكفاءة عالية.</p>
+                    
+                    <div class="about-developer">
+                        <h3>المطور</h3>
+                        <div class="developer-card">
+                            <div class="developer-avatar">
+                                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <div class="developer-info">
+                                <h4>زياد يحيى زكريا</h4>
+                                <p>مطور تطبيقات</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-team">
+                        <h3>فريق التطوير</h3>
+                        <div class="team-badge">
+                            <span>ZIADPWA</span>
+                        </div>
+                    </div>
+
+                    <div class="about-links">
+                        <button class="about-link" onclick="navigateTo('licenses')">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                            رخص الطرف الثالث
+                        </button>
+                        <button class="about-link" onclick="navigateTo('disclaimer')">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                            إخلاء المسؤولية
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Licenses Page -->
+            <section id="page-licenses" class="page">
+                <div class="page-header">
+                    <h2>رخص الطرف الثالث</h2>
+                </div>
+                <div class="licenses-content">
+                    <div class="license-item">
+                        <h3>Cairo Font</h3>
+                        <p class="license-author">Google Fonts</p>
+                        <p class="license-type">رخصة SIL Open Font License 1.1</p>
+                    </div>
+                    <div class="license-item">
+                        <h3>Dubai Font</h3>
+                        <p class="license-author">Microsoft Corporation</p>
+                        <p class="license-type">رخصة مجانية للاستخدام</p>
+                    </div>
+                    <div class="license-item">
+                        <h3>29LT Idris</h3>
+                        <p class="license-author">29LT Foundry</p>
+                        <p class="license-type">رخصة تجارية</p>
+                    </div>
+                    <div class="license-item">
+                        <h3>أيقونات SVG</h3>
+                        <p class="license-author">Feather Icons / Lucide</p>
+                        <p class="license-type">رخصة MIT</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Disclaimer Page -->
+            <section id="page-disclaimer" class="page">
+                <div class="page-header">
+                    <h2>إخلاء المسؤولية</h2>
+                </div>
+                <div class="disclaimer-content">
+                    <div class="disclaimer-section">
+                        <h3>الاستخدام</h3>
+                        <p>هذا التطبيق مقدم "كما هو" دون أي ضمانات صريحة أو ضمنية. لا يتحمل المطور أي مسؤولية عن أي أضرار مباشرة أو غير مباشرة ناتجة عن استخدام هذا التطبيق.</p>
+                    </div>
+                    <div class="disclaimer-section">
+                        <h3>البيانات</h3>
+                        <p>جميع بياناتك مخزنة محلياً على جهازك فقط. لا يتم إرسال أي بيانات إلى خوادم خارجية. أنت المسؤول الوحيد عن نسخ بياناتك احتياطياً.</p>
+                    </div>
+                    <div class="disclaimer-section">
+                        <h3>التحديثات</h3>
+                        <p>قد يتم تحديث التطبيق بشكل دوري لإصلاح الأخطاء وإضافة ميزات جديدة. ننصح بتحديث التطبيق بشكل منتظم للحصول على أفضل تجربة.</p>
+                    </div>
+                    <div class="disclaimer-section">
+                        <h3>حقوق الملكية</h3>
+                        <p>جميع الحقوق محفوظة © 2024 زياد يحيى زكريا - فريق ZIADPWA. لا يجوز نسخ أو توزيع هذا التطبيق دون إذن مسبق.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Floating Action Button -->
+        <button id="fab" class="fab" aria-label="إضافة مهمة">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+        </button>
+
+        <!-- Bottom Navigation (Mobile) -->
+        <nav class="bottom-nav">
+            <button class="bottom-nav-item active" data-page="tasks">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+                <span>مهامي</span>
+            </button>
+            <button class="bottom-nav-item" data-page="achievements">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="8" r="7"/>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                </svg>
+                <span>الإنجاز</span>
+            </button>
+            <button class="bottom-nav-item" data-page="kpi-board">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+                <span>الإحصائيات</span>
+            </button>
+            <button class="bottom-nav-item" data-page="settings">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <span>الإعدادات</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Note Modal -->
+    <div id="note-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="note-modal-title">ملاحظة جديدة</h3>
+                <button class="modal-close" onclick="closeNoteModal()">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <form id="note-form">
+                <input type="hidden" id="note-id">
+                <div class="form-group">
+                    <label for="note-title">العنوا��</label>
+                    <input type="text" id="note-title" placeholder="عنوان الملاحظة" required>
+                </div>
+                <div class="form-group">
+                    <label for="note-content">المحتوى</label>
+                    <textarea id="note-content" rows="6" placeholder="اكتب ملاحظتك هنا..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>اللون</label>
+                    <div class="color-picker">
+                        <button type="button" class="color-option note-color active" data-color="#fef3c7" style="background:#fef3c7"></button>
+                        <button type="button" class="color-option note-color" data-color="#dbeafe" style="background:#dbeafe"></button>
+                        <button type="button" class="color-option note-color" data-color="#dcfce7" style="background:#dcfce7"></button>
+                        <button type="button" class="color-option note-color" data-color="#fce7f3" style="background:#fce7f3"></button>
+                        <button type="button" class="color-option note-color" data-color="#f3e8ff" style="background:#f3e8ff"></button>
+                        <button type="button" class="color-option note-color" data-color="#fff" style="background:#fff;border:1px solid #ddd"></button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">حفظ الملاحظة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Detail Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="task-modal-title">تفاصيل المهمة</h3>
+                <button class="modal-close" onclick="closeTaskModal()">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="task-detail-content" class="task-detail-content">
+                <!-- Task details will be populated by JS -->
+            </div>
+            <div class="task-modal-actions">
+                <button id="edit-task-btn" class="btn btn-outline">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                    تعديل
+                </button>
+                <button id="delete-task-btn" class="btn btn-danger">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                    حذف
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Date Range Modal -->
+    <div id="date-range-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تحديد الفترة الزمنية</h3>
+                <button class="modal-close" onclick="closeDateRangeModal()">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <form id="date-range-form">
+                <div class="form-group">
+                    <label for="start-date">من تاريخ</label>
+                    <input type="date" id="start-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="end-date">إلى تاريخ</label>
+                    <input type="date" id="end-date" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">إنشاء التقرير</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <span class="toast-icon"></span>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <!-- Confirm Dialog -->
+    <div id="confirm-dialog" class="modal">
+        <div class="modal-content confirm-content">
+            <div class="confirm-icon">
+                <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+            </div>
+            <h3 id="confirm-title">تأكيد</h3>
+            <p id="confirm-message">هل أنت متأكد من هذا الإجراء؟</p>
+            <div class="confirm-actions">
+                <button id="confirm-cancel" class="btn btn-outline">إلغاء</button>
+                <button id="confirm-ok" class="btn btn-danger">تأكيد</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/reports.js"></script>
+    <script src="js/backup.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
