@@ -1123,8 +1123,6 @@
     </div>
 
     <script src="js/reports.js"></script>
-    <script src="js/backup.js"></script>
-    <script src="js/notifications.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
