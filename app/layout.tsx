@@ -11,15 +11,15 @@ export const metadata: Metadata = {
   description:
     'تطبيق إدارة المهام والإنجازات - من تطوير فريق ZIADPWA - المطور زياد يحيى زكريا',
   generator: 'ZIADPWA',
-  manifest: '/manifest.json',
+  manifest: '/mahamey/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'مهامي',
   },
   icons: {
-    icon: '/icon-512x512.jpg',
-    apple: '/icon-512x512.jpg',
+    icon: '/mahamey/icons/icon-512x512.jpg',
+    apple: '/mahamey/icons/icon-512x512.jpg',
   },
 }
 
